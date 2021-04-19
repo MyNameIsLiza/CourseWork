@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>643</width>
-    <height>488</height>
+    <width>321</width>
+    <height>91</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>520</y>
+      <x>550</x>
+      <y>140</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -27,21 +27,11 @@
      <string>PushButton</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>571</width>
-      <height>331</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>510</y>
+      <x>450</x>
+      <y>130</y>
       <width>121</width>
       <height>16</height>
      </rect>
@@ -50,27 +40,11 @@
      <string>Кількість вершин</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>370</y>
-      <width>71</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>10</number>
-    </property>
-   </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>480</y>
+      <x>30</x>
+      <y>100</y>
       <width>301</width>
       <height>201</height>
      </rect>
@@ -80,8 +54,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>510</y>
+      <x>640</x>
+      <y>130</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -90,53 +64,40 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
+   <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>410</y>
-      <width>391</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QComboBox" name="comboBox">
-       <property name="placeholderText">
-        <string>Початок</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBox_2">
-       <property name="placeholderText">
-        <string>Кінець</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>Додати ребро</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="pushButton_3">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>370</y>
-      <width>101</width>
+      <x>200</x>
+      <y>20</y>
+      <width>91</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Додати вершини</string>
+     <string>Підтвердити</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>181</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBox">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>180</y>
+      <width>42</width>
+      <height>22</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -145,7 +106,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>643</width>
+     <width>321</width>
      <height>21</height>
     </rect>
    </property>

@@ -67,5 +67,5 @@ int Graph::is(Edge e)
 
 Graph::Graph()
 {
-
+    //type = 0;
 }

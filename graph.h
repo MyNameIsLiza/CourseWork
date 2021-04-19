@@ -7,11 +7,12 @@
 
 class Graph
 {
-private:
+protected:
     QList<Edge> listOfEdges;
     QList<Vertex> listOfVertices;
-
+    //1 - орієнтований, 2 - неорієнтований
 public:
+    int static type;
     Graph();
     QList<Edge> getListOfEdges() const;
     void setListOfEdges(const QList<Edge> &value);
