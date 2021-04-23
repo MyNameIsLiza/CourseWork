@@ -21,7 +21,8 @@ class Auxiliary
 {
 public:
     Auxiliary();
-    void message(QString title, QString text);
+    static void message(QString title, QString text);
+
 };
 
 #endif // AUXILIARY_H

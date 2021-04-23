@@ -12,7 +12,7 @@ void OrientedGraph::setDirection(int value)
 
 OrientedGraph::OrientedGraph()
 {
-    //type = 1;
+    type = 1;
 }
 
 void OrientedGraph::addEdge(Edge e)

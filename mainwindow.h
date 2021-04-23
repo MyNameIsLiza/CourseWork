@@ -14,14 +14,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    static Graph* g;
-
+    Graph *g;
+public slots:
 private slots:
 
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     MyGraphicView *myPicture;
+
 
 };
 #endif // MAINWINDOW_H

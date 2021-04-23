@@ -14,3 +14,4 @@ void Auxiliary::message(QString title, QString text)
     msgbox.setText(text);
     msgbox.exec();
 }
+

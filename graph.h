@@ -9,10 +9,9 @@ class Graph
 {
 protected:
     QList<Edge> listOfEdges;
-    QList<Vertex> listOfVertices;
-    //1 - орієнтований, 2 - неорієнтований
+    QList<Vertex> listOfVertices;    
 public:
-    int static type;
+    int type;//1 - орієнтований, 2 - неорієнтований
     Graph();
     QList<Edge> getListOfEdges() const;
     void setListOfEdges(const QList<Edge> &value);

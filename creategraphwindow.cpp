@@ -1,25 +1,30 @@
 #include "creategraphwindow.h"
 #include "auxiliary.h"
+#include "mainwindow.h"
 #include "ui_creategraphwindow.h"
 
-CreateGraphWindow::CreateGraphWindow(QWidget *parent) :
+CreateGraphWindow::CreateGraphWindow(Graph* g, QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::CreateGraphWindow)
 {
     ui->setupUi(this);
-    /*int t = MainWindow::g->type;
+    gr = g;
+    int t = gr->type;
     switch(t){
-        case 1: //ui->label->
+        case 1: ui->label->setText("Орієнтований граф");
         break;
-        case 2: break;
-    }*/
+        case 2: ui->label->setText("Неорієнтований граф");
+        break;
+    }
 }
 
 CreateGraphWindow::~CreateGraphWindow()
 {
     delete ui;
 }
-//Graph g;
+void CreateGraphWindow::setGraph(Graph* g){
+    gr = g;
+}
 void CreateGraphWindow::on_pushButton_clicked()
 {/*
     int lastIndex, lastNumber;
@@ -52,7 +57,7 @@ void CreateGraphWindow::on_pushButton_2_clicked()
     ui->doubleSpinBox->setValue(0);
     fillByGraph(ui->tableWidget, g);*/
 }
-void CreateGraphWindow::fillByGraph(QTableWidget *tw, Graph* graph){
+void CreateGraphWindow::fillByGraph(QTableWidget *tw, Graph *graph){
     /*int lastIndex = graph->getListOfVertices().length() - 1;
     int lastNumber = graph->getListOfVertices()[lastIndex].getNumber() + 1;
     tw->setRowCount(lastNumber+1);
@@ -63,4 +68,10 @@ void CreateGraphWindow::fillByGraph(QTableWidget *tw, Graph* graph){
                     edge.getEnd().getNumber() - 1,
                     new QTableWidgetItem(QString::number(edge.getLength())));
     }*/
+}
+
+void CreateGraphWindow::on_CreateGraphWindow_tabifiedDockWidgetActivated(QDockWidget *dockWidget)
+{
+
+
 }

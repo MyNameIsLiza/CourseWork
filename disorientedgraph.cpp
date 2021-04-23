@@ -2,7 +2,7 @@
 
 DisorientedGraph::DisorientedGraph()
 {
-
+    type = 2;
 }
 
 void DisorientedGraph::addEdge(Edge e)
