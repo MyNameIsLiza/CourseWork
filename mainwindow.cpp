@@ -38,7 +38,7 @@ void MainWindow::on_pushButton_clicked()
         break;
     default: g = new OrientedGraph(); break;
     }
-    Auxiliary::message("", QString::number(g->type));
+    //Auxiliary::message("", QString::number(g->type));
     CreateGraphWindow *cgw = new CreateGraphWindow(g);    
     cgw->show();
     this->close();/**/

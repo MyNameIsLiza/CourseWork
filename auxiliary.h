@@ -22,7 +22,7 @@ class Auxiliary
 public:
     Auxiliary();
     static void message(QString title, QString text);
-
+    static void fillByGraph(QTableWidget *tw, Graph* graph);
 };
 
 #endif // AUXILIARY_H

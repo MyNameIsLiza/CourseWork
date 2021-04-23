@@ -1,15 +1,5 @@
 #include "orientedgraph.h"
 
-int OrientedGraph::getDirection() const
-{
-    return direction;
-}
-
-void OrientedGraph::setDirection(int value)
-{
-    direction = value;
-}
-
 OrientedGraph::OrientedGraph()
 {
     type = 1;

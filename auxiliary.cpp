@@ -15,3 +15,25 @@ void Auxiliary::message(QString title, QString text)
     msgbox.exec();
 }
 
+void Auxiliary::fillByGraph(QTableWidget *tw, Graph *graph){
+    int lastIndex = graph->getListOfVertices().length() - 1;
+    int lastNumber = graph->getListOfVertices()[lastIndex].getNumber() + 1;
+    tw->setRowCount(lastNumber);
+    tw->setColumnCount(lastNumber);
+    foreach(Edge edge, graph->getListOfEdges()){
+        switch(edge.getDirection()){
+        case 0: tw->setItem(edge.getStart().getNumber() - 1,
+                            edge.getEnd().getNumber() - 1,
+                            new QTableWidgetItem(QString::number(edge.getLength())));
+            tw->setItem(edge.getEnd().getNumber() - 1,
+                                        edge.getStart().getNumber() - 1,
+                                        new QTableWidgetItem(QString::number(edge.getLength())));
+                                break;
+        case 1:
+            tw->setItem(edge.getStart().getNumber() - 1,
+                        edge.getEnd().getNumber() - 1,
+                        new QTableWidgetItem(QString::number(edge.getLength())));
+                break;
+        }
+    }
+}

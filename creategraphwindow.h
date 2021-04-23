@@ -24,8 +24,11 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void fillByGraph(QTableWidget *tw, Graph* graph);
-    void on_CreateGraphWindow_tabifiedDockWidgetActivated(QDockWidget *dockWidget);
+
+
+    void on_pushButton_3_clicked();
+
+    void on_tableWidget_cellChanged(int row, int column);
 
 public slots:
 private:
