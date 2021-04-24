@@ -23,6 +23,8 @@ public:
     Auxiliary();
     static void message(QString title, QString text);
     static void fillByGraph(QTableWidget *tw, Graph* graph);
+    static void fillArrBy(double** arr, int count, int o);
+    static void fillArrBy(int* arr, int count, int o);
 };
 
 #endif // AUXILIARY_H

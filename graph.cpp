@@ -1,3 +1,4 @@
+#include "auxiliary.h"
 #include "graph.h"
 
 QList<Edge> Graph::getListOfEdges() const
@@ -64,8 +65,21 @@ int Graph::is(Edge e)
     }
     return -1;
 }
+double** Graph::formAdjacencyMatrix(){
+    int count = this->listOfVertices.count();
+    double** adjacencyMatrix = new double*[count];
+    for(int i = 0; i < count; i++)
+        adjacencyMatrix[i] = new double[count];
+    Auxiliary::fillArrBy(adjacencyMatrix, count, INT_MAX);
 
+
+foreach(Edge edge, this->listOfEdges){
+    if(edge.getDirection() == 1)
+    adjacencyMatrix[edge.getStart().getNumber()][edge.getEnd().getNumber()] = edge.getLength();
+}
+    return adjacencyMatrix;
+}
 Graph::Graph()
 {
-    //type = 0;
+    type = 0;
 }

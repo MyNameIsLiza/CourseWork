@@ -2,7 +2,7 @@
 #include "auxiliary.h"
 #include "mainwindow.h"
 #include "ui_creategraphwindow.h"
-
+#include "algorithms.h"
 #include <QException>
 
 CreateGraphWindow::CreateGraphWindow(Graph* g, QWidget *parent):
@@ -19,14 +19,11 @@ CreateGraphWindow::CreateGraphWindow(Graph* g, QWidget *parent):
         ui->comboBox_4->addItem("До кінця");
         //ui->comboBox_4->addItem("До початку");
         //ui->comboBox_4->addItem("В обидві сторони");
-
-        //ui->horizontalLayout->addItem(new QLayoutItem());
         break;
         case 2: ui->label->setText("Неорієнтований граф");
         ui->comboBox_4->setVisible(false);
         break;
     }
-    ui->comboBox_3->addItem("Алгоритм Дейстри");
 }
 
 CreateGraphWindow::~CreateGraphWindow()
@@ -44,9 +41,8 @@ void CreateGraphWindow::on_pushButton_clicked()
     for(int i = count; i >0; i--){
         lastIndex = gr->getListOfVertices().length() - i;
         lastNumber = gr->getListOfVertices()[lastIndex].getNumber() + 1;
-        //ui->comboBox->addItem(QString::number(g.getListOfVertices()[lastIndex].getNumber()+1));
-    ui->comboBox->addItem(QString::number(lastNumber));
-    ui->comboBox_2->addItem(QString::number(lastNumber));
+        ui->comboBox->addItem(QString::number(lastNumber));
+        ui->comboBox_2->addItem(QString::number(lastNumber));
     }
     ui->comboBox->setCurrentText(QString::number(lastNumber));
     ui->comboBox_2->setCurrentText(QString::number(lastNumber));
@@ -67,8 +63,6 @@ void CreateGraphWindow::on_pushButton_2_clicked()
     case 1: int d = ui->comboBox_4->currentIndex();
         edge = Edge(s, e, l, d);
     break;
-    //case 2: edge = Edge(s, e, l);
-    //break;
     }
 
     gr->addEdge(edge);
@@ -83,11 +77,16 @@ void CreateGraphWindow::on_pushButton_2_clicked()
 
 void CreateGraphWindow::on_pushButton_3_clicked()
 {
-
+    Algorithms* a = new Algorithms(gr);
+    a->show();
 }
 
 void CreateGraphWindow::on_tableWidget_cellChanged(int row, int column)
 {
+    //if(ui->tableWidget->item(row, column)->text().isSimpleText()){
+      //  ui->tableWidget->clear();
+        //return;
+    //}
     int l = ui->tableWidget->item(row, column)->text().toInt();
     gr->addEdge(Edge(row + 1, column + 1, l, 1));
     /*

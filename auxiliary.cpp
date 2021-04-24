@@ -37,3 +37,19 @@ void Auxiliary::fillByGraph(QTableWidget *tw, Graph *graph){
         }
     }
 }
+
+void Auxiliary::fillArrBy(int* arr, int count, int o)
+{
+    for(int i = 0; i < count; i++){
+        arr[i] = o;
+    }
+}
+
+void Auxiliary::fillArrBy(double **arr, int count, int o)
+{
+    for(int i = 0; i < count; i++){
+        for(int j = 0; j < count; j++){
+            arr[i][j] = o;
+        }
+}
+}

@@ -24,6 +24,7 @@ public:
     void addVertex(int count);
     void addEdge(Edge e);
     int is(Edge e);
+    double** formAdjacencyMatrix();
 };
 
 #endif // GRAPH_H
