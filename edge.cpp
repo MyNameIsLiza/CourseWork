@@ -47,8 +47,8 @@ Edge::Edge()
 
 Edge::Edge(int s, int e, double l)
 {
-    start = s;
-    end = e;
+    start.setNumber(s);
+    end.setNumber(e);
     length = l;
     direction = false;
 }

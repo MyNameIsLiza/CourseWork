@@ -21,7 +21,8 @@ public:
     int getNewIndexForEdge();
     int getNewIndexForVertex();
     void addVertex();
-    void addVertex(int count);
+    void addVertex(Vertex v);
+    void addVertices(int count);
     void addEdge(Edge e);
     int is(Edge e);
     double** formAdjacencyMatrix();

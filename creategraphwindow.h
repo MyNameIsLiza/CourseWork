@@ -30,6 +30,8 @@ private slots:
 
     void on_pushButton_write_clicked();
 
+    void on_pushButton_read_clicked();
+
 public slots:
 private:
     Ui::CreateGraphWindow *ui;

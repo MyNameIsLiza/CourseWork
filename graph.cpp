@@ -39,7 +39,11 @@ void Graph::addVertex()
     v.setNumber(getNewIndexForVertex());
     listOfVertices.append(v);
 }
-void Graph::addVertex(int count)
+void Graph::addVertex(Vertex v)
+{
+    listOfVertices.append(v);
+}
+void Graph::addVertices(int count)
 {
     for(int i = 0; i < count; i++){
         Vertex v;
@@ -47,13 +51,24 @@ void Graph::addVertex(int count)
         listOfVertices.append(v);
     }
 }
+/*
+void Graph::addVertex(int count)
+{
+    for(int i = 0; i < count; i++){
+        Vertex v;
+        v.setNumber(getNewIndexForVertex());
+        listOfVertices.append(v);
+    }
+}*/
 
 void Graph::addEdge(Edge e)
 {
     int i = is(e);
     if(i == -1)
     listOfEdges.append(e);
-    else listOfEdges[i] = e;
+    else {
+        listOfEdges[i] = e;
+    }
 }
 
 int Graph::is(Edge e)
@@ -62,7 +77,7 @@ int Graph::is(Edge e)
         if(e.getStart().getNumber() == listOfEdges[i].getStart().getNumber() &&
                 e.getEnd().getNumber() == listOfEdges[i].getEnd().getNumber())
             return i;
-    }
+    }    
     return -1;
 }
 double** Graph::formAdjacencyMatrix(){
@@ -74,9 +89,8 @@ double** Graph::formAdjacencyMatrix(){
 
 
 foreach(Edge edge, this->listOfEdges){
-    //if(edge.getDirection() == 1)
-    adjacencyMatrix[edge.getStart().getNumber()-1][edge.getEnd().getNumber()-1] = edge.getLength();
-}/**/
+    adjacencyMatrix[edge.getStart().getNumber()][edge.getEnd().getNumber()] = edge.getLength();
+}
     return adjacencyMatrix;
 }
 int Graph::getType() const

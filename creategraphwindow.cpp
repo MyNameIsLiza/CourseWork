@@ -3,6 +3,8 @@
 #include "mainwindow.h"
 #include "ui_creategraphwindow.h"
 #include "algorithms.h"
+#include "orientedgraph.h"
+#include "disorientedgraph.h"
 #include <QException>
 #include <QFile>
 #include <QXmlStreamWriter>
@@ -39,7 +41,7 @@ void CreateGraphWindow::on_pushButton_clicked()
 {
     int lastIndex, lastNumber;
     int count = ui->spinBox->value();
-    gr->addVertex(count);
+    gr->addVertices(count);
     for(int i = count; i > 0; i--){
         lastIndex = gr->getListOfVertices().length() - i;
         lastNumber = gr->getListOfVertices()[lastIndex].getNumber() + 1;
@@ -57,21 +59,18 @@ void CreateGraphWindow::on_pushButton_clicked()
 
 void CreateGraphWindow::on_pushButton_2_clicked()
 {
-    int s = ui->comboBox->currentText().toInt();
-    int e = ui->comboBox_2->currentText().toInt();
+    int s = ui->comboBox->currentText().toInt() - 1;
+    int e = ui->comboBox_2->currentText().toInt() - 1;
     double l = ui->doubleSpinBox->value();
     Edge edge;
-    switch(gr->type){
-    case 1: int d = ui->comboBox_4->currentIndex();
-        edge = Edge(s, e, l, d);
-    break;
-    }
-
+    int d = ui->comboBox_4->currentIndex();
+    edge = Edge(s, e, l, d);
     gr->addEdge(edge);
     ui->comboBox->setCurrentIndex(0);
     ui->comboBox_2->setCurrentIndex(0);
     ui->doubleSpinBox->setValue(0);
     Auxiliary::fillByGraph(ui->tableWidget, gr);
+    Auxiliary::message("new edge", QString::number(s) + " " + QString::number(e));
 }
 
 void CreateGraphWindow::on_pushButton_3_clicked()
@@ -84,7 +83,7 @@ void CreateGraphWindow::on_tableWidget_cellChanged(int row, int column)
 {
     int l = ui->tableWidget->item(row, column)->text().toInt();
     if(ui->tableWidget->item(row, column)->text().compare(QString::number(l))==0)
-    gr->addEdge(Edge(row + 1, column + 1, l, 1));
+    gr->addEdge(Edge(row, column, l, 1));
     else ui->tableWidget->item(row, column)->setText("");
 }
 QString filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\graph.xml";
@@ -110,29 +109,97 @@ void CreateGraphWindow::on_pushButton_write_clicked()
             xmlWriter.writeStartElement("listOfVerices");
             foreach(Vertex v, gr->getListOfVertices()){
                 xmlWriter.writeStartElement("vertex");
-                xmlWriter.writeStartElement("number");
-                xmlWriter.writeAttribute("QString", QString::number(v.getNumber()));
-                xmlWriter.writeEndElement();
+                xmlWriter.writeAttribute("number", QString::number(v.getNumber()));
                 xmlWriter.writeEndElement();
             }
             xmlWriter.writeEndElement();
             xmlWriter.writeStartElement("listOfEdges");
             foreach(Edge e, gr->getListOfEdges()){
                 xmlWriter.writeStartElement("edge");
-                xmlWriter.writeStartElement("start");
-                xmlWriter.writeAttribute("QString", QString::number(e.getStart().getNumber()));
-                xmlWriter.writeEndElement();
+                //xmlWriter.writeStartElement("start");
+                //xmlWriter.writeAttribute("QString", QString::number(e.getStart().getNumber()));
+                xmlWriter.writeAttribute("start", QString::number(e.getStart().getNumber()));
+                xmlWriter.writeAttribute("end", QString::number(e.getEnd().getNumber()));
+                xmlWriter.writeAttribute("length", QString::number(e.getLength()));
+                xmlWriter.writeAttribute("direction", QString::number(e.getDirection()));
+                xmlWriter.writeEndElement();/*
                 xmlWriter.writeStartElement("end");
                 xmlWriter.writeAttribute("QString", QString::number(e.getEnd().getNumber()));
                 xmlWriter.writeEndElement();
                 xmlWriter.writeStartElement("length");
                 xmlWriter.writeAttribute("QString", QString::number(e.getLength()));
                 xmlWriter.writeEndElement();
-                xmlWriter.writeEndElement();
+                xmlWriter.writeEndElement();*/
             }
             xmlWriter.writeEndElement();
             xmlWriter.writeEndElement();
         xmlWriter.writeEndDocument();
         file.close();
     }
+}
+
+void CreateGraphWindow::on_pushButton_read_clicked()
+{
+    QMessageBox::StandardButton reply;
+      reply = QMessageBox::question(this, "Важливо", "Ви впевнені, що хочете зчитати з файлу?",
+                                    QMessageBox::Yes|QMessageBox::No);
+      if (reply == QMessageBox::No) {
+        return;
+      }
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QMessageBox::critical(this,"Помилка",
+            "Не вдалося відкрити файл",
+            QMessageBox::Ok);
+            return;
+    }
+    QXmlStreamReader xmlReader(&file);
+    Graph* t;
+    while(!xmlReader.atEnd() && !xmlReader.hasError()) {
+        //Auxiliary::message("WHILE", "iteration");
+        QXmlStreamReader::TokenType token = xmlReader.readNext();
+
+        if(token == QXmlStreamReader::StartDocument) {
+                        continue;
+                }
+        if(token == QXmlStreamReader::StartElement) {
+        //Auxiliary::message("token", xmlReader.name().toString());
+        if(xmlReader.name().toString() == "type") {
+            //Auxiliary::message("TYPE", "+1");
+            QXmlStreamAttribute a = xmlReader.attributes().at(0);
+            int type = a.value().toInt();
+            switch(type){
+                case 1: t = new OrientedGraph();
+                break;
+                case 2: t = new DisorientedGraph();
+                break;
+            }
+        }
+        if(xmlReader.name().toString() == "edge") {
+            //Auxiliary::message("edges", "+1");
+            bool d = xmlReader.attributes().at(3).value().toInt();
+            double l = xmlReader.attributes().at(2).value().toDouble();
+            int e = xmlReader.attributes().at(1).value().toInt();
+            int s = xmlReader.attributes().at(0).value().toInt();
+            Edge edge = Edge(s, e, l, d);
+            t->addEdge(edge);
+        }
+        if(xmlReader.name().toString() == "vertex") {
+            Vertex v = Vertex(xmlReader.attributes().at(0).value().toInt());
+            t->addVertex(v);
+            //Auxiliary::message("vertices", "+1");
+}
+    }
+}
+
+    if(xmlReader.hasError()) {
+            QMessageBox::critical(this,
+            "xmlFile.xml Parse Error",xmlReader.errorString(),
+            QMessageBox::Ok);
+            return;
+    }
+    xmlReader.clear();
+    file.close();
+    gr = t;
+    Auxiliary::fillByGraph(ui->tableWidget, gr);
 }

@@ -33,23 +33,20 @@ QList<int> Algorithms::degreeOfVertices(Graph* g){
     for(int i = 0; i < g->getListOfVertices().count(); i++)
         degree.append(0);
     foreach(Edge edge, g->getListOfEdges()){
-        degree[edge.getStart().getNumber()-1] = degree.at(edge.getStart().getNumber()-1)+1;
+        degree[edge.getStart().getNumber()] = degree.at(edge.getStart().getNumber())+1;
     }
     return degree;
 }
 double* Algorithms::dijkstrasAlgorithm(Graph *g, int start)
 {
-    start-=1;
     int count = g->getListOfVertices().count();
-    double D[count];
+    double* D = new double[count];
     double** adjacencyMatrix = g->formAdjacencyMatrix();
-
-    bool visit[count];
+    bool visit[count];    
     for(int i=0;i<count;i++)
         {
             D[i]=adjacencyMatrix[start][i];
             visit[i]=false;
-            //Auxiliary::message(QString::number(i+1), QString::number(D[i]));
         }
     D[start]=0;
     visit[start]=true;
@@ -67,19 +64,19 @@ double* Algorithms::dijkstrasAlgorithm(Graph *g, int start)
     //Auxiliary::message("current", QString::number(current+1));
     visit[current] = true;
     if(current == -1){
-        for (int i = 0;i < count;i++)
-            Auxiliary::message("D"+QString::number(i+1), QString::number(D[i]));
+        //for (int i = 0;i < count;i++)
+          //  Auxiliary::message("D"+QString::number(i+1), QString::number(D[i]));
+
         return D;
     }
     foreach(Edge e, g->getListOfEdges()){
-        if(e.getStart().getNumber()-1 == current && !visit[e.getEnd().getNumber()-1]
-                && D[current] + e.getLength() < D[e.getEnd().getNumber()-1]){
-            D[e.getEnd().getNumber()-1] = D[current] + e.getLength();
+        if(e.getStart().getNumber() == current && !visit[e.getEnd().getNumber()]
+                && D[current] + e.getLength() < D[e.getEnd().getNumber()]){
+            D[e.getEnd().getNumber()] = D[current] + e.getLength();
         }
     }
     }
     while(current!=-1);
-
     return D;
 }
 
@@ -109,11 +106,15 @@ void Algorithms::on_pushButton_right_clicked()
 void Algorithms::on_pushButton_clicked()
 {
     int count = gr->getListOfVertices().count();
-    int s = ui->comboBox->currentText().toInt();
+    int s = ui->comboBox->currentText().toInt() - 1;
     double* D = dijkstrasAlgorithm(gr, s);
     ui->tableWidget_2->setRowCount(count);
+    //ui->tableWidget_2->setItem(0,0, new QTableWidgetItem(QString::number(D[0])));
     for (int i = 0;i < count;i++)
-        Auxiliary::message("D"+QString::number(i+1), QString::number(D[i]));
-        //ui->tableWidget_2->setItem(i,0,
-        //new QTableWidgetItem(QString::number(i)));
+        if(D[i]!= INT_MAX)
+        ui->tableWidget_2->setItem(i,0,
+        new QTableWidgetItem(QString::number(D[i])));
+    else ui->tableWidget_2->setItem(i,0,
+                                    new QTableWidgetItem("∞"));
+    /**/
 }
