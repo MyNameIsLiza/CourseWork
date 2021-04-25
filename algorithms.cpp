@@ -19,9 +19,11 @@ Algorithms::Algorithms(Graph* g, QWidget *parent) :
     ui->tableWidget->setColumnCount(1);
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Степінь"));
+    ui->tableWidget->setColumnWidth(0, ui->tableWidget->width());
     ui->tableWidget_2->setColumnCount(1);
     ui->tableWidget_2->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget_2->setHorizontalHeaderItem(0, new QTableWidgetItem("Найкоротший шлях"));
+    ui->tableWidget_2->setColumnWidth(0, ui->tableWidget_2->width());
 }
 
 Algorithms::~Algorithms()
@@ -36,6 +38,25 @@ QList<int> Algorithms::degreeOfVertices(Graph* g){
         degree[edge.getStart().getNumber()] = degree.at(edge.getStart().getNumber())+1;
     }
     return degree;
+}
+double** Algorithms::FUAlgorithm(Graph* g){
+    int count = g->getListOfVertices().count();
+    /*double** D = new double*[count];
+    {
+        D[i] = new double[count];
+        //for(int j = 0; j < count; j++)
+
+    }*/
+    double** D = g->formAdjacencyMatrix();
+    for(int i = 0; i < count; i++)
+        D[i][i] = 0;
+    for (int k = 0; k < count; k++)
+    for (int i = 0; i < count; i++)
+    for (int j = 0; j < count; j++)
+    if (D[i][k] && D[k][j] && i!=j)
+    if (D[i][k]+D[k][j]<D[i][j] || D[i][j]==0)
+        D[i][j]=D[i][k]+D[k][j];
+    return D;
 }
 double* Algorithms::dijkstrasAlgorithm(Graph *g, int start)
 {
@@ -61,12 +82,8 @@ double* Algorithms::dijkstrasAlgorithm(Graph *g, int start)
             current = i;
         }
     }
-    //Auxiliary::message("current", QString::number(current+1));
     visit[current] = true;
     if(current == -1){
-        //for (int i = 0;i < count;i++)
-          //  Auxiliary::message("D"+QString::number(i+1), QString::number(D[i]));
-
         return D;
     }
     foreach(Edge e, g->getListOfEdges()){
@@ -92,29 +109,40 @@ void Algorithms::on_pushButton_2_clicked()
 void Algorithms::on_pushButton_left_clicked()
 {
     int current = ui->stackedWidget->currentIndex();
-    //if(current!=0)
     ui->stackedWidget->setCurrentIndex(current - 1);
 }
 
 void Algorithms::on_pushButton_right_clicked()
 {
     int current = ui->stackedWidget->currentIndex();
-    //if(current != ui->stackedWidget->)
     ui->stackedWidget->setCurrentIndex(current + 1);
 }
 
 void Algorithms::on_pushButton_clicked()
 {
     int count = gr->getListOfVertices().count();
+    if(ui->comboBox->currentIndex() == -1)return;
     int s = ui->comboBox->currentText().toInt() - 1;
     double* D = dijkstrasAlgorithm(gr, s);
     ui->tableWidget_2->setRowCount(count);
-    //ui->tableWidget_2->setItem(0,0, new QTableWidgetItem(QString::number(D[0])));
     for (int i = 0;i < count;i++)
         if(D[i]!= INT_MAX)
-        ui->tableWidget_2->setItem(i,0,
-        new QTableWidgetItem(QString::number(D[i])));
-    else ui->tableWidget_2->setItem(i,0,
-                                    new QTableWidgetItem("∞"));
+        ui->tableWidget_2->setItem(i,0, new QTableWidgetItem(QString::number(D[i])));
+    else ui->tableWidget_2->setItem(i,0, new QTableWidgetItem("∞"));
     /**/
+}
+
+void Algorithms::on_pushButton_3_clicked()
+{
+    int count = gr->getListOfVertices().count();
+    double** D = FUAlgorithm(gr);
+    ui->tableWidget_3->setRowCount(count);
+    ui->tableWidget_3->setColumnCount(count);
+    for (int i = 0;i < count; i++)
+        for (int j = 0;j < count; j++)
+            if(D[i][j]!= INT_MAX)
+        ui->tableWidget_3->setItem(i,j,
+        new QTableWidgetItem(QString::number(D[i][j])));
+    else ui->tableWidget_3->setItem(i,j, new QTableWidgetItem("∞"));
+
 }
