@@ -1,0 +1,47 @@
+
+<Graph>
+    <type QString="1"/>
+    <listOfVerices>
+        <vertex>
+            <number QString="0"/>
+        </vertex>
+        <vertex>
+            <number QString="1"/>
+        </vertex>
+        <vertex>
+            <number QString="2"/>
+        </vertex>
+    </listOfVerices>
+    <listOfEdges>
+        <edge>
+            <start QString="2"/>
+            <end QString="2"/>
+            <length QString="3"/>
+        </edge>
+        <edge>
+            <start QString="1"/>
+            <end QString="2"/>
+            <length QString="4"/>
+        </edge>
+        <edge>
+            <start QString="1"/>
+            <end QString="3"/>
+            <length QString="2"/>
+        </edge>
+        <edge>
+            <start QString="3"/>
+            <end QString="3"/>
+            <length QString="4"/>
+        </edge>
+        <edge>
+            <start QString="1"/>
+            <end QString="1"/>
+            <length QString="2"/>
+        </edge>
+        <edge>
+            <start QString="3"/>
+            <end QString="1"/>
+            <length QString="2"/>
+        </edge>
+    </listOfEdges>
+</Graph>

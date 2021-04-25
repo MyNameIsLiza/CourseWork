@@ -9,6 +9,19 @@ Algorithms::Algorithms(Graph* g, QWidget *parent) :
     ui->setupUi(this);
     gr = g;
     ui->stackedWidget->setCurrentIndex(0);
+    int count = gr->getListOfVertices().length();
+    int lastIndex, lastNumber;
+    for(int i = count; i > 0; i--){
+        lastIndex = gr->getListOfVertices().length() - i;
+        lastNumber = gr->getListOfVertices()[lastIndex].getNumber() + 1;
+        ui->comboBox->addItem(QString::number(lastNumber));
+    }
+    ui->tableWidget->setColumnCount(1);
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Степінь"));
+    ui->tableWidget_2->setColumnCount(1);
+    ui->tableWidget_2->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_2->setHorizontalHeaderItem(0, new QTableWidgetItem("Найкоротший шлях"));
 }
 
 Algorithms::~Algorithms()
@@ -24,50 +37,56 @@ QList<int> Algorithms::degreeOfVertices(Graph* g){
     }
     return degree;
 }
-QList<Vertex> Algorithms::dijkstrasAlgorithm(Graph *g)
+double* Algorithms::dijkstrasAlgorithm(Graph *g, int start)
 {
-    QList<Vertex> listOfVertices;
+    start-=1;
+    int count = g->getListOfVertices().count();
+    double D[count];
     double** adjacencyMatrix = g->formAdjacencyMatrix();
-     int ver;
-     int count = g->getListOfVertices().count();
-     int numOfVisited = 0;
-     int minLen[count];
-     Auxiliary::fillArrBy(minLen, count, 0);
-     int visit[count];
-     Auxiliary::fillArrBy(visit, count, 0);
-    do{
-         int min = INT_MAX;
-         ver = INT_MAX;
-         for (int i = 0; i < count; i++) {
-           if (visit[i] == 0 && (minLen[i] < min && minLen[i] != 0)) {
-             min = minLen[i];
-             ver = i;
-           }
-         }
 
-         if (min != INT_MAX && ver != INT_MAX) {
-           for (int i = 0; i < count; i++) {
-             if (adjacencyMatrix[ver][i] > 0) {
-               if (adjacencyMatrix[ver][i] + min < minLen[i] || (minLen[i] == 0 && i != 0)) {
-                 minLen[i] = adjacencyMatrix[ver][i] + min;
-               }
-             }
-           }
-           visit[ver] = 1;
-         }
-             numOfVisited++;
-     }
-    while(ver < INT_MAX);
-    for (int i = 0; i < count; i++)
-       listOfVertices.append(Vertex(minLen[i]));
-    return listOfVertices;
+    bool visit[count];
+    for(int i=0;i<count;i++)
+        {
+            D[i]=adjacencyMatrix[start][i];
+            visit[i]=false;
+            //Auxiliary::message(QString::number(i+1), QString::number(D[i]));
+        }
+    D[start]=0;
+    visit[start]=true;
+    int current;
+    double min;
+    do{
+      current = -1;
+      min = INT_MAX;
+    for(int i = 0; i < count; i++){
+        if(D[i]< min && !visit[i]){
+            min = D[i];
+            current = i;
+        }
+    }
+    //Auxiliary::message("current", QString::number(current+1));
+    visit[current] = true;
+    if(current == -1){
+        for (int i = 0;i < count;i++)
+            Auxiliary::message("D"+QString::number(i+1), QString::number(D[i]));
+        return D;
+    }
+    foreach(Edge e, g->getListOfEdges()){
+        if(e.getStart().getNumber()-1 == current && !visit[e.getEnd().getNumber()-1]
+                && D[current] + e.getLength() < D[e.getEnd().getNumber()-1]){
+            D[e.getEnd().getNumber()-1] = D[current] + e.getLength();
+        }
+    }
+    }
+    while(current!=-1);
+
+    return D;
 }
 
 void Algorithms::on_pushButton_2_clicked()
 {
     QList<int> degree = degreeOfVertices(gr);
-    ui->tableWidget->setRowCount(degree.count());
-    ui->tableWidget->setColumnCount(1);
+    ui->tableWidget->setRowCount(degree.count());    
     for (int i = 0; i < degree.count(); i++)
         ui->tableWidget->setItem(i,0,
         new QTableWidgetItem(QString::number(degree[i])));
@@ -85,4 +104,16 @@ void Algorithms::on_pushButton_right_clicked()
     int current = ui->stackedWidget->currentIndex();
     //if(current != ui->stackedWidget->)
     ui->stackedWidget->setCurrentIndex(current + 1);
+}
+
+void Algorithms::on_pushButton_clicked()
+{
+    int count = gr->getListOfVertices().count();
+    int s = ui->comboBox->currentText().toInt();
+    double* D = dijkstrasAlgorithm(gr, s);
+    ui->tableWidget_2->setRowCount(count);
+    for (int i = 0;i < count;i++)
+        Auxiliary::message("D"+QString::number(i+1), QString::number(D[i]));
+        //ui->tableWidget_2->setItem(i,0,
+        //new QTableWidgetItem(QString::number(i)));
 }

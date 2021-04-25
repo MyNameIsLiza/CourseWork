@@ -4,6 +4,8 @@
 #include "ui_creategraphwindow.h"
 #include "algorithms.h"
 #include <QException>
+#include <QFile>
+#include <QXmlStreamWriter>
 
 CreateGraphWindow::CreateGraphWindow(Graph* g, QWidget *parent):
     QMainWindow(parent),
@@ -38,7 +40,7 @@ void CreateGraphWindow::on_pushButton_clicked()
     int lastIndex, lastNumber;
     int count = ui->spinBox->value();
     gr->addVertex(count);
-    for(int i = count; i >0; i--){
+    for(int i = count; i > 0; i--){
         lastIndex = gr->getListOfVertices().length() - i;
         lastNumber = gr->getListOfVertices()[lastIndex].getNumber() + 1;
         ui->comboBox->addItem(QString::number(lastNumber));
@@ -72,9 +74,6 @@ void CreateGraphWindow::on_pushButton_2_clicked()
     Auxiliary::fillByGraph(ui->tableWidget, gr);
 }
 
-
-
-
 void CreateGraphWindow::on_pushButton_3_clicked()
 {
     Algorithms* a = new Algorithms(gr);
@@ -83,22 +82,57 @@ void CreateGraphWindow::on_pushButton_3_clicked()
 
 void CreateGraphWindow::on_tableWidget_cellChanged(int row, int column)
 {
-    //if(ui->tableWidget->item(row, column)->text().isSimpleText()){
-      //  ui->tableWidget->clear();
-        //return;
-    //}
     int l = ui->tableWidget->item(row, column)->text().toInt();
+    if(ui->tableWidget->item(row, column)->text().compare(QString::number(l))==0)
     gr->addEdge(Edge(row + 1, column + 1, l, 1));
-    /*
-    Edge edge;
-        int l = ui->tableWidget->item(row, column)->text().toInt();
-        Auxiliary::message("text", QString::number(ui->tableWidget->item(row, column)->text().compare("0")));
-        Auxiliary::message("l", QString::number(QString::number(l).compare("0")));
-        if(QString::number(l).compare("0")==0 && ui->tableWidget->item(row, column)->text().compare("0")!=-1)
-        {
-            Auxiliary::message("l", QString::number(l));
-            ui->tableWidget->setItem(row, column, new QTableWidgetItem(0));
-            edge = Edge(row + 1, column + 1, 0, 1);
-        }else edge = Edge(row + 1, column + 1, l, 1);
-        gr->addEdge(edge);*/
+    else ui->tableWidget->item(row, column)->setText("");
+}
+QString filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\graph.xml";
+void CreateGraphWindow::on_pushButton_write_clicked()
+{
+    QMessageBox::StandardButton reply;
+      reply = QMessageBox::question(this, "Важливо", "Ви впевнені, що хочете переписати файл?",
+                                    QMessageBox::Yes|QMessageBox::No);
+      if (reply == QMessageBox::No) {
+        return;
+      }
+    QFile file(filename);
+    if( !file.open(QIODevice::WriteOnly) ) {
+        Auxiliary::message( "Помилка","Не вдалось відкрити/створити файл на запис");
+        return;
+    } else {
+        QXmlStreamWriter xmlWriter(&file);
+        xmlWriter.setAutoFormatting(true);
+            xmlWriter.writeStartElement("Graph");
+            xmlWriter.writeStartElement("type");
+            xmlWriter.writeAttribute("QString", QString::number(gr->getType()));
+            xmlWriter.writeEndElement();
+            xmlWriter.writeStartElement("listOfVerices");
+            foreach(Vertex v, gr->getListOfVertices()){
+                xmlWriter.writeStartElement("vertex");
+                xmlWriter.writeStartElement("number");
+                xmlWriter.writeAttribute("QString", QString::number(v.getNumber()));
+                xmlWriter.writeEndElement();
+                xmlWriter.writeEndElement();
+            }
+            xmlWriter.writeEndElement();
+            xmlWriter.writeStartElement("listOfEdges");
+            foreach(Edge e, gr->getListOfEdges()){
+                xmlWriter.writeStartElement("edge");
+                xmlWriter.writeStartElement("start");
+                xmlWriter.writeAttribute("QString", QString::number(e.getStart().getNumber()));
+                xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("end");
+                xmlWriter.writeAttribute("QString", QString::number(e.getEnd().getNumber()));
+                xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("length");
+                xmlWriter.writeAttribute("QString", QString::number(e.getLength()));
+                xmlWriter.writeEndElement();
+                xmlWriter.writeEndElement();
+            }
+            xmlWriter.writeEndElement();
+            xmlWriter.writeEndElement();
+        xmlWriter.writeEndDocument();
+        file.close();
+    }
 }

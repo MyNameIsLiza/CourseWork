@@ -74,11 +74,21 @@ double** Graph::formAdjacencyMatrix(){
 
 
 foreach(Edge edge, this->listOfEdges){
-    if(edge.getDirection() == 1)
-    adjacencyMatrix[edge.getStart().getNumber()][edge.getEnd().getNumber()] = edge.getLength();
-}
+    //if(edge.getDirection() == 1)
+    adjacencyMatrix[edge.getStart().getNumber()-1][edge.getEnd().getNumber()-1] = edge.getLength();
+}/**/
     return adjacencyMatrix;
 }
+int Graph::getType() const
+{
+    return type;
+}
+
+void Graph::setType(int value)
+{
+    type = value;
+}
+
 Graph::Graph()
 {
     type = 0;

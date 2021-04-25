@@ -16,7 +16,7 @@ class Algorithms : public QMainWindow
 public:
     explicit Algorithms(Graph* g, QWidget *parent = nullptr);
     ~Algorithms();
-    static QList<Vertex> dijkstrasAlgorithm(Graph* g);
+    static double* dijkstrasAlgorithm(Graph* g, int start);
     static QList<int> degreeOfVertices(Graph* g);
 
 private slots:
@@ -25,6 +25,8 @@ private slots:
     void on_pushButton_left_clicked();
 
     void on_pushButton_right_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::Algorithms *ui;

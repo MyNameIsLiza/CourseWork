@@ -25,6 +25,8 @@ public:
     void addEdge(Edge e);
     int is(Edge e);
     double** formAdjacencyMatrix();
+    int getType() const;
+    void setType(int value);
 };
 
 #endif // GRAPH_H
