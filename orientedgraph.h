@@ -8,7 +8,7 @@ class OrientedGraph : public Graph
 
 public:
     OrientedGraph();
-    void addEdge(Edge e);
+    void addEdge(Edge e) override;
 };
 
 #endif // ORIENTEDGRAPH_H

@@ -59,8 +59,8 @@ void Graph::addVertex(int count)
         v.setNumber(getNewIndexForVertex());
         listOfVertices.append(v);
     }
-}*/
-
+}
+*/
 void Graph::addEdge(Edge e)
 {
     int i = is(e);
@@ -68,6 +68,25 @@ void Graph::addEdge(Edge e)
     listOfEdges.append(e);
     else {
         listOfEdges[i] = e;
+    }
+}
+
+void Graph::removeEdge(Edge e)
+{
+    int i = is(e);
+    if(i != -1){
+        if (e.getDirection()) {
+            listOfEdges.removeAt(i);
+        }
+        else{
+            listOfEdges.removeAt(i);
+            Edge e2 = e;
+            e2.setStart(e.getEnd());
+            e2.setEnd(e.getStart());
+            i = is(e2);
+            listOfEdges.removeAt(i);
+        }
+
     }
 }
 

@@ -1,4 +1,5 @@
 #include "disorientedgraph.h"
+#include "auxiliary.h"
 
 DisorientedGraph::DisorientedGraph()
 {
@@ -7,7 +8,7 @@ DisorientedGraph::DisorientedGraph()
 
 void DisorientedGraph::addEdge(Edge e)
 {
-    Edge e2;
+    Edge e2 = e;
     e2.setStart(e.getEnd());
     e2.setEnd(e.getStart());
     int i = is(e);

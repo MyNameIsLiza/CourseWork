@@ -36,6 +36,7 @@ public slots:
 private:
     Ui::CreateGraphWindow *ui;
     Graph *gr;
+    bool isAllowed;
 };
 
 #endif // CREATEGRAPHWINDOW_H

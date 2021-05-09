@@ -7,7 +7,7 @@ class DisorientedGraph : public Graph
 {
 public:
     DisorientedGraph();
-    void addEdge(Edge e);
+    void addEdge(Edge e) override;
 };
 
 #endif // DISORIENTEDGRAPH_H

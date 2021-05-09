@@ -23,7 +23,8 @@ public:
     void addVertex();
     void addVertex(Vertex v);
     void addVertices(int count);
-    void addEdge(Edge e);
+    virtual void addEdge(Edge e);
+    void removeEdge(Edge e);
     int is(Edge e);
     double** formAdjacencyMatrix();
     int getType() const;
