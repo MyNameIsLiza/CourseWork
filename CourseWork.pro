@@ -14,6 +14,7 @@ SOURCES += \
     creategraphwindow.cpp \
     edge.cpp \
     graph.cpp \
+    mixedgraph.cpp \
     orientedgraph.cpp \
     disorientedgraph.cpp \
     main.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     creategraphwindow.h \
     edge.h \
     graph.h \
+    mixedgraph.h \
     orientedgraph.h \
     disorientedgraph.h \
     mainwindow.h \

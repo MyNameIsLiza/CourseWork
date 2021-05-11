@@ -5,6 +5,7 @@
 #include "algorithms.h"
 #include "orientedgraph.h"
 #include "disorientedgraph.h"
+#include "mixedgraph.h"
 #include <QException>
 #include <QFile>
 #include <QXmlStreamWriter>
@@ -21,15 +22,21 @@ CreateGraphWindow::CreateGraphWindow(Graph* g, QWidget *parent):
         gr = new OrientedGraph();
         gr = g;
         ui->label->setText("Орієнтований граф");
-        ui->comboBox_4->setVisible(true);
-        ui->comboBox_4->addItem("Без напрямку");
-        ui->comboBox_4->addItem("До кінця");
+        ui->comboBox_4->setVisible(false);
         break;
         case 2:
         gr = new DisorientedGraph();
         gr = g;
         ui->label->setText("Неорієнтований граф");
         ui->comboBox_4->setVisible(false);
+        break;
+        case 3:
+        gr = new MixedGraph();
+        gr = g;
+        ui->label->setText("Змішаний граф");
+        ui->comboBox_4->setVisible(true);
+        ui->comboBox_4->addItem("Без напрямку");
+        ui->comboBox_4->addItem("До кінця");
         break;
     }
 }
@@ -68,7 +75,12 @@ void CreateGraphWindow::on_pushButton_2_clicked()
     int e = ui->comboBox_2->currentText().toInt() - 1;
     double l = ui->doubleSpinBox->value();
     Edge edge;
-    int d = ui->comboBox_4->currentIndex();
+    bool d;
+    switch (gr->getType()) {
+    case 1: d = true;
+    case 2: d = false;
+    case 3: d = ui->comboBox_4->currentIndex();
+    }
     edge = Edge(s, e, l, d);
     gr->addEdge(edge);
     ui->comboBox->setCurrentIndex(0);
@@ -110,10 +122,8 @@ if(!isAllowed)return;
         }
         break;
         case 2:
-        Auxiliary::message("2 1", QString::number(ui->tableWidget->item(row, column)->text().compare(QString::number(l))));
-        Auxiliary::message("2 2", QString::number(ui->tableWidget->item(column, row)->text().compare(QString::number(l))));
         if(ui->tableWidget->item(row, column)->text().compare(QString::number(l))==0){
-            gr->addEdge(Edge(row, column, l, 2));
+            gr->addEdge(Edge(row, column, l, 0));
             isAllowed=false;
             ui->tableWidget->item(column, row)->setText(QString::number(l));
             isAllowed=true;
@@ -130,26 +140,28 @@ if(!isAllowed)return;
             gr->removeEdge(e);
         }
         break;
-    }
-
-
-
-    /*
-    int l = ui->tableWidget->item(row, column)->text().toInt();
-    if(ui->tableWidget->item(row, column)->text().compare(QString::number(l))==0)
-    switch(gr->type){
-        case 1:gr->addEdge(Edge(row, column, l, 1));break;
-        case 2:gr->addEdge(Edge(row, column, l, 2));
-        ui->tableWidget->item(column, row)->setText(QString::number(l));
+    case 3: Auxiliary::message("case 3","1");
+        if(ui->tableWidget->item(row, column)->text().compare(QString::number(l))==0)
+            gr->addEdge(Edge(row, column, l, 1));
+        else {
+            isAllowed=false;
+            ui->tableWidget->item(row, column)->setText("");
+            isAllowed=true;
+            Edge e;
+            e.setStart(row);
+            e.setEnd(column);
+            e.setDirection(true);
+            gr->removeEdge(e);
+        }
         break;
     }
-    else ui->tableWidget->item(row, column)->setText("");*/
 }
 QString filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\graph.xml";
 void CreateGraphWindow::on_pushButton_write_clicked()
 {
     if(gr->getType() == 1)filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\orientedgraph.xml";
     if(gr->getType() == 2)filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\disorientedgraph.xml";
+    if(gr->getType() == 3)filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\mixedgraph.xml";
     QMessageBox::StandardButton reply;
       reply = QMessageBox::question(this, "Важливо", "Ви впевнені, що хочете переписати файл?",
                                     QMessageBox::Yes|QMessageBox::No);
@@ -194,6 +206,7 @@ void CreateGraphWindow::on_pushButton_read_clicked()
 {
     if(gr->getType() == 1)filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\orientedgraph.xml";
     if(gr->getType() == 2)filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\disorientedgraph.xml";
+    if(gr->getType() == 3)filename = "C:\\Users\\Roman\\Documents\\Lizo4ka\\Cute\\CourseWork\\mixedgraph.xml";
     QMessageBox::StandardButton reply;
       reply = QMessageBox::question(this, "Важливо", "Ви впевнені, що хочете зчитати з файлу?",
                                     QMessageBox::Yes|QMessageBox::No);

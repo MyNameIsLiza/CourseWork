@@ -1,9 +1,9 @@
 #include "creategraphwindow.h"
 #include "disorientedgraph.h"
-//#include "disorientedgraph.h"
 #include "graph.h"
 #include "mainwindow.h"
 #include "orientedgraph.h"
+#include "mixedgraph.h"
 #include "ui_mainwindow.h"
 #include <QGraphicsScene>
 #include <QMessageBox>
@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->gridLayout->addWidget(myPicture);
         ui->comboBox->addItem("Орієнтований граф");
         ui->comboBox->addItem("Неорієнтований граф");
+        ui->comboBox->addItem("Змішаний граф");
 }
 
 MainWindow::~MainWindow()
@@ -36,9 +37,12 @@ void MainWindow::on_pushButton_clicked()
         case 1:        
         g = new DisorientedGraph();
         break;
-    default: g = new OrientedGraph(); break;
+        case 2:
+        g = new MixedGraph();
+
+        break;
+        default: g = new OrientedGraph(); break;
     }
-    //Auxiliary::message("", QString::number(INT_MAX));
     CreateGraphWindow *cgw = new CreateGraphWindow(g);    
     cgw->show();
     this->close();/**/
