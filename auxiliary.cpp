@@ -18,8 +18,6 @@ void Auxiliary::message(QString title, QString text)
 void Auxiliary::fillByGraph(QTableWidget *tw, Graph *graph){
     int lastIndex = graph->getListOfVertices().length()-1;
     int lastNumber = graph->getListOfVertices()[lastIndex].getNumber() + 1;
-    message("", QString::number(graph->getListOfEdges().count()));
-    message("lastNumber", QString::number(lastNumber));
     tableInitialization(tw, lastNumber);
     foreach(Edge edge, graph->getListOfEdges()){//if(edge.getDirection())
         {
